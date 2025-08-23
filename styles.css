@@ -1,0 +1,698 @@
+/* Prevent white background on scroll */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    background-attachment: fixed;
+}
+
+/* Default dark theme background */
+html, body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 100%);
+}
+
+/* Light theme background */
+body[data-theme="light"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 60%, #9c88ff 100%) !important;
+}
+
+/* Ensure html element also gets theme background */
+html {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 100%);
+}
+
+html:has(body[data-theme="light"]) {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 60%, #9c88ff 100%) !important;
+}
+
+/* Theme Variables */
+:root {
+    /* Dark Theme (Default) */
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.9);
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --input-bg: rgba(255, 255, 255, 0.1);
+    --input-border: rgba(255, 255, 255, 0.2);
+    --card-bg: rgba(255, 255, 255, 0.08);
+    --grid-bg: linear-gradient(135deg, #0a0f1c, #1e293b);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --hover-bg: rgba(255, 255, 255, 0.15);
+    --hover-border: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] {
+    /* Light Theme */
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 60%, #9c88ff 100%);
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --text-primary: #1f2937;
+    --text-secondary: rgba(31, 41, 55, 0.9);
+    --text-muted: rgba(31, 41, 55, 0.7);
+    --input-bg: rgba(255, 255, 255, 0.6);
+    --input-border: rgba(31, 41, 55, 0.2);
+    --card-bg: rgba(255, 255, 255, 0.3);
+    --grid-bg: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --hover-bg: rgba(255, 255, 255, 0.4);
+    --hover-border: rgba(31, 41, 55, 0.3);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    z-index: 10;
+}
+
+.theme-toggle-btn:hover {
+    background: var(--hover-bg);
+    border-color: var(--hover-border);
+    transform: scale(1.1);
+}
+
+/* Apply theme variables */
+.gradient-bg {
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    min-width: 100vw;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.glass-effect {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    transition: all 0.4s ease;
+}
+
+.glass-effect:hover {
+    background: var(--hover-bg);
+    border-color: var(--hover-border);
+    backdrop-filter: blur(15px);
+}
+
+/* Update text colors for themes */
+body[data-theme="light"] .text-white {
+    color: var(--text-primary) !important;
+}
+
+body[data-theme="light"] .text-white\/90 {
+    color: var(--text-secondary) !important;
+}
+
+body[data-theme="light"] .text-white\/80 {
+    color: var(--text-muted) !important;
+}
+
+/* Update input styles for themes */
+body[data-theme="light"] input,
+body[data-theme="light"] select {
+    background: var(--input-bg) !important;
+    border-color: var(--input-border) !important;
+    color: var(--text-primary) !important;
+}
+
+body[data-theme="light"] input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+/* Update card backgrounds for themes */
+body[data-theme="light"] .bg-white\/10 {
+    background: var(--card-bg) !important;
+}
+
+/* Update grid container for themes */
+.grid-container {
+    max-width: 95vw;
+    max-height: 65vh;
+    background: var(--grid-bg);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px var(--shadow-color);
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Update cell styles for themes */
+body[data-theme="light"] .cell {
+    background: #ffffff !important;
+    border-color: #d1d5db !important;
+    color: var(--text-primary) !important;
+}
+
+body[data-theme="light"] .wall {
+    background: linear-gradient(135deg, #6b7280, #9ca3af) !important;
+    border-color: #4b5563 !important;
+}
+
+/* Light theme special cells */
+body[data-theme="light"] .source {
+    background: linear-gradient(135deg, #2563EB, #3B82F6) !important;
+    border: 3px solid #1D4ED8 !important;
+    color: white !important;
+    animation: pulse 2s infinite !important;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.5) !important;
+}
+
+body[data-theme="light"] .destination {
+    background: linear-gradient(135deg, #DC2626, #EF4444) !important;
+    border: 3px solid #B91C1C !important;
+    color: white !important;
+    animation: pulse 2s infinite !important;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.5) !important;
+}
+
+body[data-theme="light"] .explored {
+    background: linear-gradient(135deg, #F59E0B, #FCD34D) !important;
+    border: 2px solid #D97706 !important;
+    color: white !important;
+    animation: fadeIn 0.5s ease-in !important;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4) !important;
+}
+
+body[data-theme="light"] .path {
+    background: linear-gradient(135deg, #059669, #10B981) !important;
+    border: 3px solid #047857 !important;
+    color: white !important;
+    animation: pathGlow 1s ease-in-out !important;
+    box-shadow: 0 0 12px rgba(5, 150, 105, 0.6) !important;
+}
+
+/* Dark theme cell improvements */
+body[data-theme="dark"] .cell {
+    background: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #1f2937 !important;
+}
+
+body[data-theme="dark"] .wall {
+    background: linear-gradient(135deg, #1e293b, #0f172a) !important;
+    border-color: #0f172a !important;
+}
+
+/* Dark theme special cells */
+body[data-theme="dark"] .source {
+    background: linear-gradient(135deg, #2563EB, #3B82F6) !important;
+    border: 3px solid #1D4ED8 !important;
+    color: white !important;
+    animation: pulse 2s infinite !important;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.5) !important;
+}
+
+body[data-theme="dark"] .destination {
+    background: linear-gradient(135deg, #DC2626, #EF4444) !important;
+    border: 3px solid #B91C1C !important;
+    color: white !important;
+    animation: pulse 2s infinite !important;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.5) !important;
+}
+
+body[data-theme="dark"] .explored {
+    background: linear-gradient(135deg, #F59E0B, #FCD34D) !important;
+    border: 2px solid #D97706 !important;
+    color: white !important;
+    animation: fadeIn 0.5s ease-in !important;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4) !important;
+}
+
+body[data-theme="dark"] .path {
+    background: linear-gradient(135deg, #059669, #10B981) !important;
+    border: 3px solid #047857 !important;
+    color: white !important;
+    animation: pathGlow 1s ease-in-out !important;
+    box-shadow: 0 0 12px rgba(5, 150, 105, 0.6) !important;
+}
+
+/* Ensure grid container uses correct theme background */
+body[data-theme="dark"] .grid-container {
+    background: linear-gradient(135deg, #0a0f1c, #1e293b) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="light"] .grid-container {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0) !important;
+    border: 1px solid rgba(31, 41, 55, 0.1) !important;
+}
+
+/* Update mode indicators for light theme */
+body[data-theme="light"] .mode-source {
+    background: linear-gradient(135deg, #3B82F6, #60A5FA) !important;
+    color: white !important;
+}
+
+body[data-theme="light"] .mode-destination {
+    background: linear-gradient(135deg, #EF4444, #F87171) !important;
+    color: white !important;
+}
+
+body[data-theme="light"] .mode-wall {
+    background: linear-gradient(135deg, #6B7280, #9CA3AF) !important;
+    color: white !important;
+}
+
+/* Update legend items for light theme */
+body[data-theme="light"] .legend-item-hover:hover {
+    background: var(--hover-bg) !important;
+}
+
+/* Update instruction hover for light theme */
+body[data-theme="light"] .instruction-hover:hover {
+    background: var(--hover-bg) !important;
+}
+
+/* Update stats cards for light theme */
+body[data-theme="light"] .stats-card-hover:hover {
+    background: var(--hover-bg) !important;
+}
+
+/* Update input hover effects for light theme */
+body[data-theme="light"] .input-hover:hover {
+    box-shadow: 0 8px 25px var(--shadow-color) !important;
+    border-color: var(--hover-border) !important;
+}
+
+body[data-theme="light"] .input-hover:focus {
+    box-shadow: 0 12px 35px var(--shadow-color) !important;
+    border-color: var(--hover-border) !important;
+}
+
+/* Update select hover effects for light theme */
+body[data-theme="light"] .select-hover:hover {
+    box-shadow: 0 8px 25px var(--shadow-color) !important;
+    border-color: var(--hover-border) !important;
+    background: var(--hover-bg) !important;
+}
+
+body[data-theme="light"] .select-hover:focus {
+    box-shadow: 0 12px 35px var(--shadow-color) !important;
+    border-color: var(--hover-border) !important;
+    background: var(--hover-bg) !important;
+}
+
+/* Dark theme enhancements */
+body[data-theme="dark"] .input-hover:hover {
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+body[data-theme="dark"] .input-hover:focus {
+    box-shadow: 0 12px 35px rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+body[data-theme="dark"] .select-hover:hover {
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+body[data-theme="dark"] .select-hover:focus {
+    box-shadow: 0 12px 35px rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.cell {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cell:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.cell:active {
+    transform: scale(0.95);
+}
+
+.wall {
+    background: linear-gradient(135deg, #111827, #1F2937);
+    border: 2px solid #000000;
+}
+
+.source {
+    background: linear-gradient(135deg, #2563EB, #3B82F6);
+    border: 3px solid #1D4ED8;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+}
+
+.destination {
+    background: linear-gradient(135deg, #DC2626, #EF4444);
+    border: 3px solid #B91C1C;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+}
+
+.explored {
+    background: linear-gradient(135deg, #F59E0B, #FCD34D);
+    border: 2px solid #D97706;
+    animation: fadeIn 0.5s ease-in;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+.path {
+    background: linear-gradient(135deg, #059669, #10B981);
+    border: 3px solid #047857;
+    animation: pathGlow 1s ease-in-out;
+    box-shadow: 0 0 12px rgba(5, 150, 105, 0.6);
+}
+
+/* Global scrollbar styling */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Light theme scrollbars */
+body[data-theme="light"] ::-webkit-scrollbar-track {
+    background: rgba(31, 41, 55, 0.1);
+}
+
+body[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: rgba(31, 41, 55, 0.3);
+    background-clip: content-box;
+}
+
+body[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(31, 41, 55, 0.5);
+    background-clip: content-box;
+}
+
+body[data-theme="light"] ::-webkit-scrollbar-corner {
+    background: rgba(31, 41, 55, 0.1);
+}
+
+/* Grid container specific scrollbars */
+.grid-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.grid-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.grid-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.grid-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive cell sizing */
+.cell-small {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+}
+
+.cell-medium {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    min-height: 22px;
+}
+
+.cell-large {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+}
+
+.cell-extra-large {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pathGlow {
+    0% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.5); }
+}
+
+/* Enhanced glass effect hover */
+.button-hover {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.button-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.button-hover:hover::before {
+    left: 100%;
+}
+
+.button-hover:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.button-glow {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.button-glow:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+    transform: translateY(-3px) scale(1.05);
+}
+
+.button-glow:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Enhanced mode indicator hover */
+.mode-indicator {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.mode-indicator:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mode-source {
+    background: linear-gradient(135deg, #3B82F6, #60A5FA);
+    color: white;
+}
+
+.mode-destination {
+    background: linear-gradient(135deg, #EF4444, #F87171);
+    color: white;
+}
+
+.mode-wall {
+    background: linear-gradient(135deg, #6B7280, #9CA3AF);
+    color: white;
+}
+
+/* Enhanced hover effects for interactive elements */
+.input-hover {
+    transition: all 0.3s ease;
+}
+
+.input-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.input-hover:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.select-hover {
+    transition: all 0.3s ease;
+}
+
+.select-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.select-hover:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.stats-card-hover {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.stats-card-hover:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.stats-card-hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+}
+
+.stats-card-hover:hover::after {
+    opacity: 1;
+}
+
+.legend-item-hover {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.legend-item-hover:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.instruction-hover {
+    transition: all 0.3s ease;
+}
+
+.instruction-hover:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+    transform: translateX(5px);
+}
+
+/* Floating animation for interactive elements */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+.float-hover:hover {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* Glow effect for special elements */
+.glow-hover {
+    transition: all 0.3s ease;
+}
+
+.glow-hover:hover {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Additional responsive improvements */
+@media (max-width: 640px) {
+    .grid-container {
+        max-width: 98vw;
+        max-height: 60vh;
+        padding: 10px;
+    }
+    
+    .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .button-glow:hover {
+        transform: translateY(-2px) scale(1.02);
+    }
+    
+    .stats-card-hover:hover {
+        transform: translateY(-3px) scale(1.01);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .grid-container {
+        max-height: 55vh;
+        padding: 8px;
+    }
+    
+    /* Disable complex hover effects on very small screens */
+    .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+}

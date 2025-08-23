@@ -1,0 +1,210 @@
+g<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Maze Solver</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f172a'/%3E%3C!-- Irregular maze walls with organic feel --%3E%3Cpath d='M3 3h26v2H3V3zM3 7h8v2H3V7zM15 7h6v2h-6V7zM25 7h4v2h-4V7zM3 11h4v2H3v-2zM11 11h8v2h-8v-2zM23 11h6v2h-6v-2zM3 15h6v2H3v-2zM13 15h6v2h-6v-2zM23 15h6v2h-6v-2zM3 19h4v2H3v-2zM11 19h10v2H11v-2zM25 19h4v2h-4v-2zM3 23h8v2H3v-2zM15 23h6v2h-6v-2zM25 23h4v2h-4v-2zM3 27h26v2H3v-2z' fill='%231e293b'/%3E%3Cpath d='M5 5v2h2V5H5zM13 5v2h2V5h-2zM21 5v2h2V5h-2zM7 9v2h2V9H7zM15 9v2h2V9h-2zM23 9v2h2V9h-2zM5 13v2h2v-2H5zM13 13v2h2v-2h-2zM21 13v2h2v-2h-2zM7 17v2h2v-2H7zM15 17v2h2v-2h-2zM23 17v2h2v-2h-2zM5 21v2h2v-2H5zM13 21v2h2v-2h-2zM21 21v2h2v-2h-2zM7 25v2h2v-2H7zM15 25v2h2v-2h-2zM23 25v2h2v-2h-2z' fill='%23334155'/%3E%3C!-- Source and destination with glow --%3E%3Ccircle cx='6' cy='6' r='1.5' fill='%233B82F6'/%3E%3Ccircle cx='6' cy='6' r='2.5' fill='none' stroke='%233B82F6' stroke-width='0.5' opacity='0.6'/%3E%3Ccircle cx='26' cy='26' r='1.5' fill='%23EF4444'/%3E%3Ccircle cx='26' cy='26' r='2.5' fill='none' stroke='%23EF4444' stroke-width='0.5' opacity='0.6'/%3E%3C!-- Path line connecting source to destination --%3E%3Cpath d='M6 6 Q16 8 26 26' stroke='%2310B981' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="gradient-bg min-h-screen" data-theme="dark">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="glass-effect rounded-2xl p-4 sm:p-6 md:p-8 mb-6 relative">
+                <!-- Theme Toggle Button -->
+                <button id="themeToggle" class="absolute top-4 right-4 p-3 rounded-full glass-effect hover:scale-110 transition-all duration-300 theme-toggle-btn">
+                    <span id="themeIcon" class="text-2xl">🌙</span>
+                </button>
+                
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">🧩 Dynamic Maze Solver</h1>
+                <p class="text-base sm:text-lg md:text-xl text-white/90">Visualize Dijkstra's and A* algorithms in action</p>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="glass-effect rounded-2xl p-4 sm:p-6 md:p-8 mb-8 card-hover">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 items-end">
+                <div>
+                                                             <label class="block text-base sm:text-lg font-bold text-white mb-3">📏 Grid Dimensions</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="gridRows" min="5" max="50" value="10" placeholder="Rows" 
+                               class="flex-1 px-2 sm:px-3 py-2 sm:py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all text-center text-lg sm:text-xl font-bold input-hover">
+                        <span class="text-white/90 self-center font-bold text-xl sm:text-2xl float-hover">×</span>
+                        <input type="number" id="gridCols" min="5" max="50" value="10" placeholder="Columns" 
+                               class="flex-1 px-2 sm:px-3 py-2 sm:py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all text-center text-lg sm:text-xl font-bold input-hover">
+                     </div>
+                 </div>
+                 <div>
+                                         <label class="block text-base sm:text-lg font-bold text-white mb-3">⚡ Algorithm</label>
+                    <select id="algorithm" class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all text-base sm:text-lg font-semibold select-hover">
+                        <option value="dijkstra" class="text-gray-800">Dijkstra's Algorithm</option>
+                        <option value="astar" class="text-gray-800">A* Algorithm</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-base sm:text-lg font-bold text-white mb-3">🎯 Selection Mode</label>
+                    <select id="selectionMode" class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all text-base sm:text-lg font-semibold select-hover">
+                        <option value="source" class="text-gray-800">Set Source</option>
+                        <option value="destination" class="text-gray-800">Set Destination</option>
+                        <option value="wall" class="text-gray-800">Toggle Wall</option>
+                    </select>
+                </div>
+                <div class="sm:col-span-2 lg:col-span-1">
+                    <button id="generateMaze" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all button-glow button-hover font-bold text-base sm:text-lg">
+                        🎲 Generate Maze
+                    </button>
+                </div>
+                <div class="sm:col-span-2 lg:col-span-1">
+                    <button id="solveMaze" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:from-green-600 hover:to-green-700 transition-all button-glow button-hover font-bold text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        🚀 Solve Maze
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-8 card-hover">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 text-center">
+                                 <div class="bg-white/10 rounded-xl p-3 sm:p-4 backdrop-blur-sm stats-card-hover">
+                     <p class="text-sm sm:text-base text-white/90 mb-2 font-semibold">🎯 Current Mode</p>
+                     <p id="currentMode" class="text-lg sm:text-2xl font-bold text-white mode-indicator mode-source">Set Source</p>
+                 </div>
+                 <div class="bg-white/10 rounded-xl p-3 sm:p-4 backdrop-blur-sm stats-card-hover">
+                     <p class="text-sm sm:text-base text-white/90 mb-2 font-semibold">⚡ Algorithm</p>
+                     <p id="currentAlgorithm" class="text-lg sm:text-2xl font-bold text-white">-</p>
+                 </div>
+                 <div class="bg-white/10 rounded-xl p-3 sm:p-4 backdrop-blur-sm stats-card-hover">
+                     <p class="text-sm sm:text-base text-white/90 mb-2 font-semibold">📏 Distance</p>
+                     <p id="totalDistance" class="text-lg sm:text-2xl font-bold text-white">-</p>
+                 </div>
+                 <div class="bg-white/10 rounded-xl p-3 sm:p-4 backdrop-blur-sm stats-card-hover">
+                     <p class="text-sm sm:text-base text-white/90 mb-2 font-semibold">🔍 Steps Explored</p>
+                     <p id="stepsExplored" class="text-lg sm:text-2xl font-bold text-white">-</p>
+                 </div>
+                 <div class="bg-white/10 rounded-xl p-3 sm:p-4 backdrop-blur-sm stats-card-hover">
+                     <p class="text-sm sm:text-base text-white/90 mb-2 font-semibold">⏱️ Execution Time</p>
+                     <p id="executionTime" class="text-lg sm:text-2xl font-bold text-white">-</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Maze Grid -->
+                <div class="glass-effect rounded-2xl p-4 sm:p-6 md:p-8 card-hover">
+            <div class="text-center mb-4">
+                <p id="gridSizeIndicator" class="text-white/90 font-bold text-base sm:text-lg">Grid Size: 10x10</p>
+            </div>
+            <div id="mazeContainer" class="flex justify-center">
+                <div id="mazeGrid" class="grid gap-1 grid-container"></div>
+            </div>
+        </div>
+
+        <!-- Algorithm Comparison -->
+        <div id="comparisonSection" class="glass-effect rounded-2xl p-8 mt-8 card-hover" style="display: none;">
+            <h3 class="text-2xl font-bold text-white mb-6 text-center">📊 Algorithm Comparison</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
+                    <h4 class="text-xl font-bold text-blue-300 mb-4 flex items-center">
+                        <span class="w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
+                        Dijkstra's Algorithm
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-white/80">Execution Time:</span>
+                            <span id="dijkstraTime" class="text-white font-semibold">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/80">Steps Explored:</span>
+                            <span id="dijkstraSteps" class="text-white font-semibold">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/80">Path Distance:</span>
+                            <span id="dijkstraDistance" class="text-white font-semibold">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
+                    <h4 class="text-xl font-bold text-green-300 mb-4 flex items-center">
+                        <span class="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                        A* Algorithm
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-white/80">Execution Time:</span>
+                            <span id="astarTime" class="text-white font-semibold">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/80">Steps Explored:</span>
+                            <span id="astarSteps" class="text-white font-semibold">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/80">Path Distance:</span>
+                            <span id="astarDistance" class="text-white font-semibold">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                                 <button id="runComparison" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-8 py-3 rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all button-glow button-hover font-semibold">
+                     🔄 Run Both Algorithms
+                 </button>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="glass-effect rounded-2xl p-6 mt-8 card-hover">
+            <h3 class="text-xl font-bold text-white mb-4 text-center">🎨 Legend</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 text-center">
+                                 <div class="flex items-center justify-center space-x-1 sm:space-x-2 legend-item-hover p-2">
+                     <div class="w-4 h-4 sm:w-6 sm:h-6 bg-gray-200 border-2 border-gray-400 rounded"></div>
+                     <span class="text-white/90 text-xs sm:text-sm">Empty</span>
+                 </div>
+                 <div class="flex items-center justify-center space-x-1 sm:space-x-2 legend-item-hover p-2">
+                     <div class="w-4 h-4 sm:w-6 sm:h-6 wall rounded"></div>
+                     <span class="text-white/90 text-xs sm:text-sm">Wall</span>
+                 </div>
+                 <div class="flex items-center justify-center space-x-1 sm:space-x-2 legend-item-hover p-2">
+                     <div class="w-4 h-4 sm:w-6 sm:h-6 source rounded"></div>
+                     <span class="text-white/90 text-xs sm:text-sm">Source</span>
+                 </div>
+                 <div class="flex items-center justify-center space-x-1 sm:space-x-2 legend-item-hover p-2">
+                     <div class="w-4 h-4 sm:w-6 sm:h-6 destination rounded"></div>
+                     <span class="text-white/90 text-xs sm:text-sm">Destination</span>
+                 </div>
+                 <div class="flex items-center justify-center space-x-1 sm:space-x-2 legend-item-hover p-2">
+                     <div class="w-4 h-4 sm:w-6 sm:h-6 path rounded"></div>
+                     <span class="text-white/90 text-xs sm:text-sm">Path</span>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="glass-effect rounded-2xl p-6 mt-8 card-hover">
+            <h3 class="text-xl font-bold text-white mb-4 text-center">📋 Instructions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-white/90">
+                                 <div class="instruction-hover p-4 rounded-xl">
+                     <h4 class="font-semibold text-white mb-2">🎯 Setup:</h4>
+                     <ul class="space-y-1 text-sm">
+                         <li>• Set custom grid dimensions (rows × columns)</li>
+                         <li>• Click "Generate Maze" to create a random maze</li>
+                         <li>• Use "Set Source" mode to place the starting point</li>
+                         <li>• Use "Set Destination" mode to place the target</li>
+                     </ul>
+                 </div>
+                 <div class="instruction-hover p-4 rounded-xl">
+                     <h4 class="font-semibold text-white mb-2">🚀 Solving:</h4>
+                     <ul class="space-y-1 text-sm">
+                         <li>• Choose between Dijkstra's or A* algorithm</li>
+                         <li>• Click "Solve Maze" to visualize the pathfinding</li>
+                         <li>• Use "Toggle Wall" mode to modify the maze</li>
+                         <li>• Compare both algorithms with the comparison tool</li>
+                     </ul>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
