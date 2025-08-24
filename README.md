@@ -4,6 +4,8 @@ A beautiful, interactive web application that visualizes pathfinding algorithms 
 
 ![Maze Solver Demo](https://img.shields.io/badge/Status-Live-brightgreen) ![Responsive](https://img.shields.io/badge/Responsive-Yes-blue) ![No Build Tools](https://img.shields.io/badge/Build%20Tools-None-orange)
 
+Website Link: https://shortpath786.netlify.app/
+
 ## ✨ Features
 
 ### 🎯 **Core Functionality**
